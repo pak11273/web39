@@ -1,9 +1,11 @@
 const express = require("express");
+const path = require("path");
 const dotenv = require("dotenv");
 dotenv.config();
 
 const server = express();
 server.use(express.json());
+server.use(express.static(path.join(__dirname, "client/build"))); // react app
 
 if (process.NODE_ENV === "development") {
   // on heroku env is NODE_ENV => production
@@ -11,8 +13,12 @@ if (process.NODE_ENV === "development") {
   server.use(cors());
 }
 
-server.use("*", (req, res) => {
-  res.send("success");
+server.get("/api/hello", (req, res) => {
+  res.json({ message: "hello" });
+});
+
+server.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client/build", "index.html")); // react app
 });
 
 const PORT = process.env.PORT || 5000;
