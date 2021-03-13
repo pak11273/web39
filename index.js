@@ -7,7 +7,7 @@ const server = express();
 server.use(express.json());
 server.use(express.static(path.join(__dirname, "client/build"))); // react app
 
-if (process.NODE_ENV === "development") {
+if (process.NODE_ENV !== "production") {
   // on heroku env is NODE_ENV => production
   const cors = require("cors");
   server.use(cors());
